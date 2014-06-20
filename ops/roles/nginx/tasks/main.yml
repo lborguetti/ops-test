@@ -1,0 +1,28 @@
+---
+- name: Install nginx
+  apt: pkg=nginx
+  sudo: yes
+  tags:
+    - nginx
+    - packages
+
+- name: Stopping and disabling nginx
+  service: name=nginx state=stopped enabled=no
+  sudo: yes
+  tags:
+    - nginx
+    - packages
+
+- name: Enabling nginx respawn
+  template: src=upstart-nginx.j2 dest=/etc/init/nginx.conf owner=root group=root mode=0644
+  sudo: yes
+  tags:
+    - nginx
+    - packages
+
+- name: Starting nginx via upstart
+  command: initctl start nginx
+  sudo: yes
+  tags:
+    - nginx
+    - packages

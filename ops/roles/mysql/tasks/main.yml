@@ -1,0 +1,15 @@
+---
+- name: Install mysql-server
+  apt: pkg=mysql-server
+  sudo: yes
+  tags:
+    - mysql
+    - mysql-server
+    - packages
+
+- name: Install python-mysqldb
+  apt: pkg=python-mysqldb
+  sudo: yes
+  tags:
+    - python-mysqldb
+    - packages

@@ -1,0 +1,8 @@
+---
+- name: Install tomcat7
+  apt: pkg=tomcat7
+  sudo: yes
+  tags:
+    - tomcat
+    - tomcat7
+    - packages

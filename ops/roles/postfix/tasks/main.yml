@@ -1,0 +1,16 @@
+---
+- name: Install postfix
+  apt: pkg=postfix
+  sudo: yes
+  tags: 
+    - postfix 
+    - mta
+    - packages
+
+- name: Install mailutils
+  apt: pkg=mailutils
+  sudo: yes
+  tags: 
+    - mailutils
+    - mail
+    - packages
