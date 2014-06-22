@@ -6,23 +6,52 @@
     - nginx
     - packages
 
-- name: Stopping and disabling nginx
+- name: Stopping and disabling nginx via service
   service: name=nginx state=stopped enabled=no
   sudo: yes
   tags:
     - nginx
-    - packages
+    - config
+
+
+- name: Creating directory /etc/nginx/ssl
+  file: path=/etc/nginx/ssl state=directory owner=root group=root mode=0755
+  sudo: yes
+  tags:
+    - nginx
+    - config
+
+- name: Copying ssl server.crt
+  copy: src=../files/server.crt dest=/etc/nginx/ssl/server.crt owner=root group=root mode=0644
+  sudo: yes
+  tags: 
+    - nginx
+    - config
+
+- name: Copying ssl server.key
+  copy: src=../files/server.key dest=/etc/nginx/ssl/server.key owner=root group=root mode=0644
+  sudo: yes
+  tags: 
+    - nginx
+    - config
+
+- name: Setting nginx proxy (http/https)
+  template: src=conf-default-nginx.j2 dest=/etc/nginx/sites-available/default owner=root group=root mode=0644
+  sudo: yes
+  tags:
+    - nginx
+    - config
 
 - name: Enabling nginx respawn
   template: src=upstart-nginx.j2 dest=/etc/init/nginx.conf owner=root group=root mode=0644
   sudo: yes
   tags:
     - nginx
-    - packages
+    - config
 
-- name: Starting nginx via upstart
+- name: Starting nginx via upstart (respawn)
   command: initctl start nginx
   sudo: yes
   tags:
     - nginx
-    - packages
+    - config

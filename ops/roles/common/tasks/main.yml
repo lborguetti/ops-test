@@ -2,7 +2,7 @@
 - name: Update apt cache and upgrade system
   apt: upgrade=dist update-cache=yes
   sudo: yes
-  tags: 
+  tags:
     - common
     - update
     - upgrade
@@ -14,19 +14,33 @@
     - common
     - language
 
-- name: Set LANG to en_US.UTF-8
-  lineinfile: dest=/etc/default/locale line='LANG="en_US.UTF-8"'
+- name: Set locale to {{ locale }}
+  command: /usr/sbin/update-locale LANG={{ locale }} LC_ALL={{ locale }}
   sudo: yes
-  tags: 
+  tags:
     - common
     - language
 
-- name: Set LC_ALL to en_US.UTF-8
-  lineinfile: dest=/etc/default/locale line='LC_ALL="en_US.UTF-8"'
+- name: Set /etc/localtime to {{ timezone }}
+  command: /bin/cp /usr/share/zoneinfo/{{ timezone }} /etc/localtime
   sudo: yes
-  tags: 
+  tags:
     - common
-    - language
+    - localtime
+
+- name: Set /etc/timezone to {{ timezone }}
+  template: src=default-timezone.j2 dest=/etc/timezone
+  sudo: yes
+  tags:
+    - common
+    - timezone
+
+- name: Update tzdata
+  command: /usr/sbin/dpkg-reconfigure --frontend noninteractive tzdata
+  sudo: yes
+  tags:
+    - common
+    - tzdata
 
 - name: Stopping and disabling puppet agent
   service: name=puppet state=stopped enabled=no
@@ -43,15 +57,3 @@
     - common
     - chef-client
     - config
-
-#- name: Install gcc
-#  apt: pkg=gcc
-#  tags: common
-
-#- name: Install g++
-#  apt: pkg=g++
-#  tags: common
-
-#- name: Install make
-#  apt: pkg=make
-#  tags: common

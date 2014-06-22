@@ -13,3 +13,75 @@
   tags:
     - python-mysqldb
     - packages
+
+- name: Update mysql root password for all root accounts
+  mysql_user: name="root" host={{ item }} password={{ mysql_root_password }}
+  with_items:
+    - 127.0.0.1
+    - ::1
+    - localhost
+  sudo: yes
+  tags:
+    mysql
+    config
+
+- name: Copy .my.cnf file with root password credentials
+  template: src=root-my.cnf.j2 dest=/root/.my.cnf owner=root group=root mode=0600
+  sudo: yes
+  tags:
+    - mysql
+    - config
+
+- name: Delete anonymous MySQL server user
+  mysql_user: user="" host={{ item }} state="absent"
+  with_items:
+    - $server_hostname
+    - 127.0.0.1
+    - ::1
+    - localhost
+  sudo: yes
+  tags:
+    - mysql
+    - config
+
+- name: Remove the MySQL test database
+  mysql_db: db=test state=absent
+  sudo: yes
+  tags:
+    - mysql
+    - config
+
+- name: Copy ops_test database dump file
+  copy: src=../files/dump.sql.bz2 dest=/tmp owner=root group=root mode=0644
+  sudo: yes
+  tags:
+    - mysql
+    - config
+
+- name: Create database ops_test
+  mysql_db: name=ops_test state=present encoding=utf8
+  sudo: yes
+  tags:
+    - mysql
+    - config
+
+- name: Import ops_test database dump file
+  mysql_db: name=ops_test state=import target=/tmp/dump.sql.bz2
+  sudo: yes
+  tags:
+    - mysql
+    - config
+
+- name: Remove ops_test database dump file
+  file: name=/tmp/dump.sql.bz2 state=absent
+  sudo: yes
+  tags:
+    - mysql
+    - config
+
+- name: Copy backup_mysql_db to /etc/cron.daily
+  copy: src=../files/backup_mysql_db dest=/etc/cron.daily/backup_mysql_db owner=root group=root mode=0755
+  sudo: yes
+  tags:
+    - mysql
+    - config

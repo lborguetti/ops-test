@@ -6,3 +6,10 @@
     - tomcat
     - tomcat7
     - packages
+
+- name: Copying sample app to webapps
+  copy: src=../files/sample.war dest=/var/lib/tomcat7/webapps/sample.war owner=root group=root mode=0644
+  sudo: yes
+  tags:
+    - tomcat
+    - deploy
