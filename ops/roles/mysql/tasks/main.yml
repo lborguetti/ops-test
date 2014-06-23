@@ -80,7 +80,7 @@
     - config
 
 - name: Copy backup_mysql_db to /etc/cron.daily
-  copy: src=../files/backup_mysql_db dest=/etc/cron.daily/backup_mysql_db owner=root group=root mode=0755
+  template: src=backup_mysql_db.j2 dest=/etc/cron.daily/backup_mysql_db owner=root group=root mode=0755
   sudo: yes
   tags:
     - mysql

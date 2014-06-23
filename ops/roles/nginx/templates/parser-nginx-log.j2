@@ -1,0 +1,17 @@
+#!/bin/bash
+
+SUBJECT="Parser nginx log"
+
+MAIL_TO={{ mail_to }}
+
+LOG_FILE=/var/log/nginx/access.log
+
+TEMP_FILE=$(/bin/mktemp)
+
+printf "%s\n\n" "Parser ${LOG_FILE}" > ${TEMP_FILE}
+
+/usr/bin/awk '{print $7" "$9}' ${LOG_FILE} | /usr/bin/sort | /usr/bin/uniq -c | /usr/bin/sort -rf >> ${TEMP_FILE}
+
+/usr/bin/mail -s "${SUBJECT}" ${MAIL_TO} < ${TEMP_FILE}
+
+rm -f ${TEMP_FILE}
