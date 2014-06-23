@@ -7,6 +7,27 @@
     - tomcat7
     - packages
 
+- name: Stopping and disabling tomcat7 via service
+  service: name=tomcat7 state=stopped enabled=no
+  sudo: yes
+  tags:
+    - tomcat
+    - config
+
+- name: Enabling tomcat7 respawn
+  template: src=upstart-tomcat7.j2 dest=/etc/init/tomcat7.conf owner=root group=root mode=0644
+  sudo: yes
+  tags:
+    - tomcat
+    - config
+
+- name: Starting tomcat via upstart (respawn)
+  command: initctl start tomcat7
+  sudo: yes
+  tags:
+    - tomcat
+    - config
+
 - name: Copying sample app to webapps
   copy: src=../files/sample.war dest=/var/lib/tomcat7/webapps/sample.war owner=root group=root mode=0644
   sudo: yes

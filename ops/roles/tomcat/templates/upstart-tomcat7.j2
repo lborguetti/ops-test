@@ -11,17 +11,13 @@ description "Tomcat Server"
 
   # adapt paths - Replace with your Paths:
   env JAVA_HOME=/usr/lib/jvm/default-java
-  env CATALINA_HOME=/usr/share/tomcat7
-  env DEFAULT=/etc/default/tomcat7
   env JVM_TMP=/tmp/tomcat7-tomcat7-tmp
 
+  env CATALINA_HOME=/usr/share/tomcat7
+  env CATALINA_BASE=/var/lib/tomcat7
+
   # adapt java options to suit your needs:
-  env JAVA_OPTS="-Djava.awt.headless=true -Xms512M -Xmx1024M -server -XX:+UseParallelGC"
-
-pre-start script
-
-  OPENJDKS=""
-
+  env JAVA_OPTS="-Djava.awt.headless=true -Xmx128M"
 
   exec $CATALINA_HOME/bin/catalina.sh run
 
