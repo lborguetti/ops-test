@@ -6,8 +6,8 @@
 
 	- Virtualbox -> Preferências -> Rede -> "Redes exclusivas de hospedeiros"
 		- Add vboxnet0
-			Endereço IPv4: 192.168.56.1
-			Máscara de rede IPv4: 255.255.255.0
+			- Endereço IPv4: 192.168.56.1
+			- Máscara de rede IPv4: 255.255.255.0
 
 	2 Vagrant http://www.vagrantup.com/
 
