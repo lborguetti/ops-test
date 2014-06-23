@@ -4,6 +4,11 @@
 
 	1 Virtual Box https://www.virtualbox.org/
 
+	- Virtualbox -> Preferências -> Rede -> "Redes exclusivas de hospedeiros"
+		- Add vboxnet0
+			Endereço IPv4: 192.168.56.1
+			Máscara de rede IPv4: 255.255.255.0
+
 	2 Vagrant http://www.vagrantup.com/
 
 	3 Ansible http://www.ansible.com/
@@ -20,7 +25,14 @@
 
 * Test
 
- http://localhost
+ - nginx
+ 
+ http://192.168.56.10
 
- https://localhost
+ https://192.168.56.10
 
+ - tomcat
+ 
+ http://192.168.56.10/sample
+
+ https://192.168.56.10/sample
