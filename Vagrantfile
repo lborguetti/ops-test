@@ -123,9 +123,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   #
   #   chef.validation_client_name = "ORGNAME-validator"
   config.vm.provision "ansible" do |ansible|
-    ansible.playbook = "ops/test.yml"
-    ansible.raw_arguments = "-i ops/test_hosts"
-    #ansible.verbose = "vvv"
+    ansible.playbook = "ops/playbook.yml"
     ansible.sudo = true
   end
 
