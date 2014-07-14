@@ -1,36 +1,20 @@
 ---
 - name: Install tomcat7
   apt: pkg=tomcat7
-  sudo: yes
-  tags:
-    - tomcat
-    - tomcat7
-    - packages
+  tags: tomcat
 
 - name: Stopping and disabling tomcat7 via service
   service: name=tomcat7 state=stopped enabled=no
-  sudo: yes
-  tags:
-    - tomcat
-    - config
+  tags: tomcat
 
 - name: Enabling tomcat7 respawn
   template: src=upstart-tomcat7.j2 dest=/etc/init/tomcat7.conf owner=root group=root mode=0644
-  sudo: yes
-  tags:
-    - tomcat
-    - config
+  tags: tomcat
 
 - name: Starting tomcat via upstart (respawn)
   command: initctl start tomcat7
-  sudo: yes
-  tags:
-    - tomcat
-    - config
+  tags: tomcat
 
 - name: Copying sample app to webapps
-  copy: src=../files/sample.war dest=/var/lib/tomcat7/webapps/sample.war owner=root group=root mode=0644
-  sudo: yes
-  tags:
-    - tomcat
-    - deploy
+  copy: src=sample.war dest=/var/lib/tomcat7/webapps/sample.war owner=root group=root mode=0644
+  tags: tomcat

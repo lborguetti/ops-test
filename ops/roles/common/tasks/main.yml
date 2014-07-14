@@ -1,59 +1,31 @@
 ---
-- name: Update apt cache and upgrade system
-  apt: upgrade=dist update-cache=yes
-  sudo: yes
-  tags:
-    - common
-    - update
-    - upgrade
+- name: Update and upgrade system
+  apt: upgrade=yes update-cache=yes
+  tags: common
 
 - name: Update language
   apt: pkg=language-pack-en
-  sudo: yes
-  tags:
-    - common
-    - language
+  tags: common
 
-- name: Set locale to {{ locale }}
+- name: Update locale to {{ locale }}
   command: /usr/sbin/update-locale LANG={{ locale }} LC_ALL={{ locale }}
-  sudo: yes
-  tags:
-    - common
-    - language
+  tags: common
 
-- name: Set /etc/localtime to {{ timezone }}
+- name: Update localtime to {{ timezone }}
   command: /bin/cp /usr/share/zoneinfo/{{ timezone }} /etc/localtime
-  sudo: yes
-  tags:
-    - common
-    - localtime
+  tags: common
 
-- name: Set /etc/timezone to {{ timezone }}
+- name: Set timezone to {{ timezone }}
   template: src=default-timezone.j2 dest=/etc/timezone
-  sudo: yes
-  tags:
-    - common
-    - timezone
+  tags: common
 
 - name: Update tzdata
   command: /usr/sbin/dpkg-reconfigure --frontend noninteractive tzdata
-  sudo: yes
-  tags:
-    - common
-    - tzdata
+  tags: common
 
-- name: Stopping and disabling puppet agent
-  service: name=puppet state=stopped enabled=no
-  sudo: yes
-  tags:
-    - common
+- name: Stopping puppet agent/chef client
+  service: name={{ item }} state=stopped enabled=no
+  with_items:
     - puppet
-    - config
-
-- name: Stopping and disabling chef client
-  service: name=chef-client state=stopped enabled=no
-  sudo: yes
-  tags:
-    - common
     - chef-client
-    - config
+  tags: common

@@ -1,16 +1,7 @@
 ---
 - name: Install postfix
   apt: pkg=postfix
-  sudo: yes
-  tags: 
-    - postfix 
-    - mta
-    - packages
-
-- name: Install mailutils
-  apt: pkg=mailutils
-  sudo: yes
-  tags: 
+  with_items:
+    - postfix
     - mailutils
-    - mail
-    - packages
+  tags: postfix
