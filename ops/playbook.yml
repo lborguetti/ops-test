@@ -1,0 +1,12 @@
+---
+- hosts: all
+  user: vagrant
+  sudo: yes
+
+  roles:
+    - common
+    - postfix
+    - mysql
+    - tomcat
+    - nginx
+
