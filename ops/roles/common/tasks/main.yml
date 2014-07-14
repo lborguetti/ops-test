@@ -15,7 +15,7 @@
   command: /bin/cp /usr/share/zoneinfo/{{ timezone }} /etc/localtime
   tags: common
 
-- name: Set timezone to {{ timezone }}
+- name: Update timezone to {{ timezone }}
   template: src=default-timezone.j2 dest=/etc/timezone
   tags: common
 
