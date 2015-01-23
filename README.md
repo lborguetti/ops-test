@@ -10,13 +10,10 @@
 
 * Run
 
- git clone https://github.com/lborguetti/ops.test
-
- cd ops.test
-
- vagrant up 
-
- vagrant ssh
+		git clone https://github.com/lborguetti/ops.test
+		cd ops.test
+		vagrant up 
+		vagrant ssh
 
 * Test
 
